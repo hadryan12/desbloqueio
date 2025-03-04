@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desbloqueio de iPhone</title>
+    <style>
+        /* Estilos gerais */
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* Estilos do input e do botão */
+        input[type="text"] {
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #007aff;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Desbloqueio de iPhone</h1>
+        <p>Insira o IMEI do seu iPhone para iniciar o processo de desbloqueio.</p>
+
+        <div>
+            <input type="text" id="imei" placeholder="Digite o IMEI do seu iPhone">
+            <button onclick="consultarIMEI()">Iniciar Desbloqueio</button>
+        </div>
+
+        <!-- Exibição do modelo do iPhone -->
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        // Função para consultar a API de IMEI
+        function consultarIMEI() {
+            const imei = document.getElementById("imei").value;
+            
+            if (!imei) {
+                alert("Por favor, insira o IMEI.");
+                return;
+            }
+
+            // Substitua pela URL da API que você obteve
+            const apiUrl = `https://api.imei.info/v1/check?imei=${imei}&apiKey=f66f474d-d90c-4b65-bd79-527e09a0bd91`;
+
+            // Realizando a consulta na API
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        const modelName = data.device.model; // Nome do modelo
+                        const modelImage = data.device.image; // Imagem do modelo (se disponível)
+
+                        // Exibindo o modelo do iPhone no site
+                        document.getElementById("resultado").innerHTML = `
+                            <h3>Modelo: ${modelName}</h3>
+                            <img src="${modelImage}" alt="${modelName}" style="width: 200px;">
+                        `;
+                    } else {
+                        alert("IMEI não encontrado.");
+                    }
+                })
+                .catch(error => {
+                    alert("Erro ao consultar o IMEI. Tente novamente.");
+                    console.error(error);
+                });
+        }
+    </script>
+
+</body>
+</html>
