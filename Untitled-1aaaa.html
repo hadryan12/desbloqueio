@@ -26,15 +26,33 @@
 
         h1 {
             color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
 
-        /* Estilos do input e do botão */
+        p {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
         input[type="text"] {
+            width: 70%;
             padding: 15px;
             font-size: 18px;
             border-radius: 10px;
             border: 2px solid #ddd;
             margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007aff;
+            outline: none;
         }
 
         button {
@@ -45,7 +63,55 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        .phone-model-container {
+            margin-top: 30px;
+            display: none;
+            text-align: center;
+        }
+
+        .phone-model img {
+            width: 200px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .phone-model h3 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .payment-info {
+            margin-top: 20px;
+            display: none;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .payment-link {
+            font-weight: bold;
+            color: #007aff;
+            text-decoration: none;
+        }
+
+        .payment-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.9em;
+        }
+
     </style>
 </head>
 <body>
@@ -54,49 +120,51 @@
         <h1>Desbloqueio de iPhone</h1>
         <p>Insira o IMEI do seu iPhone para iniciar o processo de desbloqueio.</p>
 
-        <div>
+        <div class="input-container">
             <input type="text" id="imei" placeholder="Digite o IMEI do seu iPhone">
-            <button onclick="consultarIMEI()">Iniciar Desbloqueio</button>
+            <button onclick="processPayment()">Iniciar Desbloqueio</button>
         </div>
 
         <!-- Exibição do modelo do iPhone -->
-        <div id="resultado"></div>
+        <div class="phone-model-container" id="phone-model-container">
+            <div class="phone-model">
+                <img id="phone-image" src="" alt="Modelo do iPhone">
+                <h3 id="phone-name">Modelo: iPhone X</h3>
+            </div>
+        </div>
+
+        <!-- Link de pagamento -->
+        <div class="payment-info" id="payment-info">
+            <p>Para completar o desbloqueio, realize o pagamento no link abaixo:</p>
+            <a href="https://www.exemplo-de-pagamento.com" class="payment-link" target="_blank">Clique aqui para pagar</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Desbloqueio de iPhone - Todos os direitos reservados.</p>
     </div>
 
     <script>
-        // Função para consultar a API de IMEI
-        function consultarIMEI() {
-            const imei = document.getElementById("imei").value;
-            
-            if (!imei) {
+        // Função para processar pagamento e mostrar o modelo
+        function processPayment() {
+            var imei = document.getElementById("imei").value;
+
+            if (imei === "") {
                 alert("Por favor, insira o IMEI.");
-                return;
+            } else {
+                // Simulação da identificação do modelo
+                var modelName = "iPhone X"; // Aqui você pode usar uma API ou lógica para identificar o modelo real a partir do IMEI
+                var modelImage = "https://www.apple.com/v/iphone/home/ab/images/overview/compare_iphone_x.jpg"; // Exemplo de imagem
+
+                // Mostrar modelo de iPhone
+                document.getElementById("phone-model-container").style.display = "block";
+                document.getElementById("phone-name").innerText = "Modelo: " + modelName;
+                document.getElementById("phone-image").src = modelImage;
+
+                // Exibir o link de pagamento
+                document.querySelector("button").style.display = "none";
+                document.getElementById("payment-info").style.display = "block";
             }
-
-            // Substitua pela URL da API que você obteve
-            const apiUrl = `https://api.imei.info/v1/check?imei=${imei}&apiKey=f66f474d-d90c-4b65-bd79-527e09a0bd91`;
-
-            // Realizando a consulta na API
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "success") {
-                        const modelName = data.device.model; // Nome do modelo
-                        const modelImage = data.device.image; // Imagem do modelo (se disponível)
-
-                        // Exibindo o modelo do iPhone no site
-                        document.getElementById("resultado").innerHTML = `
-                            <h3>Modelo: ${modelName}</h3>
-                            <img src="${modelImage}" alt="${modelName}" style="width: 200px;">
-                        `;
-                    } else {
-                        alert("IMEI não encontrado.");
-                    }
-                })
-                .catch(error => {
-                    alert("Erro ao consultar o IMEI. Tente novamente.");
-                    console.error(error);
-                });
         }
     </script>
 
